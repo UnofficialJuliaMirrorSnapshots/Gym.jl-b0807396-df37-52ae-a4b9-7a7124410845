@@ -1,5 +1,6 @@
 ## Documentation: http://docs.travis-ci.com/user/languages/julia/
 language: julia
+dist: xenial
 
 os:
   - linux
@@ -54,7 +55,7 @@ before_install:
 #  - pip install --user -e '.[algorithmic]'
 #  - cd ..
 #  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-  - julia -e 'using Pkg; Pkg.clone(pwd()); ENV["GYM_ENVS"]="atari:algorithmic:box2d:classic_control"; Pkg.build("Gym"); Pkg.test("Gym"; coverage=true)'
+  - julia --color=yes -e 'using Pkg; ENV["GYM_ENVS"]="atari:algorithmic:box2d:classic_control"; Pkg.activate(); Pkg.instantiate(); Pkg.build(); Pkg.test()'
 after_success:
   # push coverage results to Coveralls
   - julia -e 'using Pkg; cd(Pkg.dir("Gym")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
